@@ -27,6 +27,16 @@
     }
   }
 
+  function downloadResume() {
+    const resumeUrl = '/JimWeaver_Resume.pdf';
+    const link = document.createElement('a');
+    link.href = resumeUrl;
+    link.download = 'JimWeaver_Resume.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
   onMount(() => {
     visible = true;
     runTypewriterLoop();
@@ -42,7 +52,7 @@
       <button onclick={() => portfolioState.scrollToSection('projects')} class="btn-primary">
         View My Work
       </button>
-      <button onclick={() => alert('Resume download functionality')} class="btn-secondary">
+      <button onclick={downloadResume} class="btn-secondary">
         Download Resume
       </button>
     </div>
