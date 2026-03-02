@@ -54,7 +54,7 @@ export const heroTitles = [
 export const aboutMe: AboutMe = {
   lead: "I'm Jim — a backend-focused developer who loves engineering systems that are scalable, reliable, and operate at speed.",
   paragraphs: [
-    "My work lives at the intersection of performance and correctness. I gravitate toward Rust and Python for server-side work, and I design around the full stack of a system: schema design, concurrency, observability, and deployment.",
+    "My work lives at the intersection of performance and correctness. I gravitate toward Elixir, Rust, and Python for server-side work, and I design around the full stack of a system: including schema design, concurrency, observability, and deployment.",
     "Outside of code, I'm studying Electrical Engineering, which keeps me grounded in real-world constraints and the weight of building things that actually matter.",
   ],
   highlights: [
@@ -86,7 +86,7 @@ export const projects: Project[] = [
   {
     title: "BE2100 Capstone Project",
     description: "A full-stack web application for managing and visualizing data. Built with Django and Sqlite, it provides a user-friendly interface for data analysis and reporting.",
-    tags: ["Django", "Sqlite", "Data Visualization"],
+    tags: ["Python", "Django", "SQLite", "Data Visualization"],
     link: "https://be2100.jimweaver.com"
   },
 ];
