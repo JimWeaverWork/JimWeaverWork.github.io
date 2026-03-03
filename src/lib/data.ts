@@ -45,9 +45,9 @@ export const navSections = ['about', 'projects', 'skills', 'contact'] as const;
 export type NavSection = typeof navSections[number] | 'home';
 
 export const heroTitles = [
-  'a Developer',
+  'an Engineer',
   'a Problem Solver',
-  'a Builder',
+  'a Developer',
   'an Innovator'
 ];
 
@@ -62,6 +62,7 @@ export const aboutMe: AboutMe = {
     { icon: "🎓", label: "Electrical & Computer Engineering" },
     { icon: "💜", label: "Elixir enthusiast" },
     { icon: "🦀", label: "Rust enjoyer" },
+    { icon: "🐍", label: "Python proponent" },
   ],
   terminal: [
     { text: "whoami", prompt: true },
@@ -93,8 +94,8 @@ export const projects: Project[] = [
 
 export const skills: SkillGroup[] = [
   { name: "Backend", items: ["Python", "Rust", "Elixir", "C++"] },
-  { name: "Databases", items: ["PostgreSQL", "SQLite", "Redis"] },
-  { name: "DevOps", items: ["Docker", "GitHub Actions", "AWS"] },
+  { name: "Databases", items: ["PostgreSQL", "SQLite", "Redis", "SpacetimeDB"] },
+  { name: "DevOps", items: ["Docker", "GitHub Actions", "AWS", "Cloudflare"] },
   { name: "Frontend", items: ["TypeScript", "Svelte", "React", "Vue"] },
 ];
 
