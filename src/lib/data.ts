@@ -85,6 +85,12 @@ export const projects: Project[] = [
     link: "https://chat.jimweaver.com"
   },
   {
+    title: "polyscope",
+    description: "A small lightweight data visualization tool built with Python and DuckDB that looks at some basic metrics from Polymarket and lets you orgainize and view them in a pleasent way.",
+    tags: ["Python", "Redis", "Duckdb", "TypeScript", "React"],
+    link: "https://poly.jimweaver.com"
+  },
+  {
     title: "BE2100 Capstone Project",
     description: "A full-stack web application for managing and visualizing data. Built with Django and Sqlite, it provides a user-friendly interface for data analysis and reporting.",
     tags: ["Python", "Django", "SQLite", "Data Visualization"],
@@ -94,7 +100,7 @@ export const projects: Project[] = [
 
 export const skills: SkillGroup[] = [
   { name: "Backend", items: ["Python", "Rust", "Elixir", "C++"] },
-  { name: "Databases", items: ["PostgreSQL", "SQLite", "Redis", "SpacetimeDB"] },
+  { name: "Databases", items: ["PostgreSQL", "SQLite", "Redis", "SpacetimeDB", "DuckDB"] },
   { name: "DevOps", items: ["Docker", "GitHub Actions", "AWS", "Cloudflare"] },
   { name: "Frontend", items: ["TypeScript", "Svelte", "React", "Vue"] },
 ];
