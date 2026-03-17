@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && rm -f dist/wrangler.json",
+    "build": "vite build",
     "preview": "pnpm run build && wrangler dev",
     "check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json",
     "deploy": "pnpm run build && wrangler deploy"
