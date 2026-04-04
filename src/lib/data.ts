@@ -163,8 +163,8 @@ export const projects: Project[] = [
     title: "BE2100 Capstone Project",
     description: "A full-stack web application for managing and visualizing data. Built with Django and SQLite, it provides a user-friendly interface for data analysis and reporting.",
     overview:
-      "The BE2100 Capstone is a full-stack web application developed as the final project for a Biological Engineering course. " +
-      "It provides a data management and reporting platform built on Django and SQLite, allowing users to input experiment records, run basic statistical analyses, and visualize results through a browser-based interface. " +
+      "The BE2100 Capstone is a full-stack web application developed as the final project for a Basic Engineering course. " +
+      "It provides a data management and reporting platform built on Django and SQLite, allowing users to input survey records, run basic statistical analyses, and visualize results through a browser-based interface. " +
       "The project prioritized clean schema design, Django's ORM for structured data access, and clear data presentation without the overhead of a heavy frontend framework. " +
       "All views are server-rendered, keeping the architecture simple and the deployment footprint small — the entire application ships as a self-contained Django project with an embedded SQLite database.",
     tags: ["Python", "Django", "SQLite", "Data Visualization"],
