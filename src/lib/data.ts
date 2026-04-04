@@ -103,6 +103,33 @@ export const aboutMe: AboutMe = {
 
 export const projects: Project[] = [
   {
+    slug: "mixer",
+    title: "mixer",
+    description: "A proof of concept twitter clone designed to test the ash framework and build out a fully functioning app that actual people can use.",
+    overview:
+      "Mixer is a small twitter clone application that was built to explore the ash framework and flesh out an application where in theory it could gain a real userbase." +
+      "It runs almost entirely on my machine or hardware I own, with the only service being the mailing service designed for use with Brevo for development." +
+      "The backend is entirely done in elixir and utilizes ash typescript to create types and rpc modules for the frontend to use if they're not manage by phoenix." +
+      "With it being built like this it allows for simple deployment on any machine or hardware and simple clustering from elixir.",
+    tags: ["Elixir", "Postgres", "Minio S3", "Typescript", "React"],
+    link: "https://mixer.jimweaver.com",
+    highlights: [
+      "Elixir strenghts utilized as a easy clustering and concurrent system",
+      "Postgres durability and pooled interactions result in fast responses",
+      "Feed designed to let you view people you follow and recommended posts",
+      "Secured by your email login and magic link logins/tokens",
+      "Easy to use frontend with both mobile and desktop support",
+    ],
+    techStack: [
+      { name: "Elixir", role: "Backend business logic & server side rendering" },
+      { name: "Postgres", role: "Database of choice for its basic durability" },
+      { name: "Minio S3", role: "S3 bucket host for users media uploads" },
+      { name: "TypeScript", role: "Frontend type safety and client bindings" },
+      { name: "React", role: "Frontend framework of choice for a basic app" },
+    ],
+    status: "live",
+  },
+  {
     slug: "anon-chat",
     title: "anon-chat",
     description: "A small anonymous chat app built with Rust and SpacetimeDB with a React and TypeScript frontend. It is a realtime chat application that automatically deletes messages after 24 hours.",
