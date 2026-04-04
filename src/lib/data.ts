@@ -22,12 +22,36 @@ export interface TerminalLine {
   output?: boolean;
 }
 
-export interface Project {
-  title: string;
-  description: string;
-  tags: string[];
-  link: string;
+// ─── Project types ────────────────────────────────────────────────────────────
+
+export interface TechDetail {
+  /** Technology name, e.g. "Rust" */
+  name: string;
+  /** Short description of its role, e.g. "Backend runtime & SpacetimeDB module" */
+  role: string;
 }
+
+export interface Project {
+  /** URL-safe identifier used for routing, e.g. "anon-chat" */
+  slug: string;
+  title: string;
+  /** One-sentence card description shown on the homepage */
+  description: string;
+  /** Full paragraph(s) shown on the project detail page */
+  overview: string;
+  tags: string[];
+  /** Live deployment URL */
+  link: string;
+  /** Source repository URL (optional) */
+  repo?: string;
+  /** Bullet-point achievements / notable technical details */
+  highlights: string[];
+  /** Ordered list of technologies with their roles */
+  techStack: TechDetail[];
+  status: 'live' | 'in-progress' | 'archived';
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 export interface SkillGroup {
   name: string;
@@ -79,22 +103,88 @@ export const aboutMe: AboutMe = {
 
 export const projects: Project[] = [
   {
+    slug: "anon-chat",
     title: "anon-chat",
     description: "A small anonymous chat app built with Rust and SpacetimeDB with a React and TypeScript frontend. It is a realtime chat application that automatically deletes messages after 24 hours.",
+    overview:
+      "anon-chat is a lightweight anonymous real-time messaging application built as an exploration of SpacetimeDB's WebAssembly module system. " +
+      "The backend is a Rust module compiled to WASM and deployed directly inside SpacetimeDB, which manages the message store, enforces TTL logic to automatically expire messages after 24 hours, and pushes updates to all connected clients over SpacetimeDB's built-in subscription protocol. " +
+      "The frontend is a React + TypeScript SPA that subscribes to the live message table and renders updates reactively — no polling, no external message broker. " +
+      "The project was an exercise in exploring a novel database paradigm where server logic lives inside the database itself rather than a separate application layer.",
     tags: ["Rust", "SpacetimeDB", "TypeScript", "React"],
-    link: "https://chat.jimweaver.com"
+    link: "https://chat.jimweaver.com",
+    highlights: [
+      "Backend implemented as a Rust WASM module running inside SpacetimeDB — no separate server process",
+      "Messages automatically expire after 24 hours via TTL reducer logic written in Rust",
+      "Real-time updates delivered over SpacetimeDB's subscription protocol — zero polling",
+      "Anonymous by design: no accounts, no persistent identity, no stored metadata",
+      "Frontend subscribes directly to database table state for reactive UI updates",
+      "Deployed and served via Cloudflare Pages for global low-latency access",
+    ],
+    techStack: [
+      { name: "Rust", role: "SpacetimeDB module / backend logic (compiled to WASM)" },
+      { name: "SpacetimeDB", role: "Database, real-time subscriptions, and WASM hosting" },
+      { name: "React", role: "Frontend UI framework" },
+      { name: "TypeScript", role: "Frontend type safety and SpacetimeDB client bindings" },
+      { name: "Cloudflare Pages", role: "Frontend hosting & CDN" },
+    ],
+    status: "live",
   },
   {
+    slug: "polyscope",
     title: "polyscope",
-    description: "A small lightweight data visualization tool built with Python and DuckDB that looks at some basic metrics from Polymarket and lets you orgainize and view them in a pleasent way.",
+    description: "A small lightweight data visualization tool built with Python and DuckDB that looks at some basic metrics from Polymarket and lets you organize and view them in a pleasant way.",
+    overview:
+      "polyscope is a lightweight data visualization and exploration tool that ingests public market data from Polymarket's API and surfaces it in an organized, queryable interface. " +
+      "The backend is a Python service that fetches and normalizes market data, caches responses in Redis to avoid hammering the upstream API, and stores records in an embedded DuckDB instance that supports fast analytical queries without any external database infrastructure. " +
+      "The frontend is a React + TypeScript SPA that exposes filtering, sorting, and summary views over the market data. " +
+      "The goal of the project was to make Polymarket's raw API data more approachable and visually digestible, with a focus on keeping the entire stack lightweight and self-contained.",
     tags: ["Python", "Redis", "Duckdb", "TypeScript", "React"],
-    link: "https://poly.jimweaver.com"
+    link: "https://poly.jimweaver.com",
+    highlights: [
+      "DuckDB embedded analytics engine enables fast aggregation queries with no external database infrastructure",
+      "Redis caching layer minimizes redundant Polymarket API calls and smooths over rate limits",
+      "Python backend normalizes and stores raw Polymarket market records into a consistent schema",
+      "REST API serves pre-aggregated and raw data to the frontend",
+      "Interactive filtering and sorting on the frontend without additional round-trips",
+      "Minimal footprint — no heavy ORM, no managed database, runs on a single small VM",
+    ],
+    techStack: [
+      { name: "Python", role: "Backend service, data ingestion, and REST API" },
+      { name: "DuckDB", role: "Embedded analytics and query engine" },
+      { name: "Redis", role: "API response caching layer" },
+      { name: "React", role: "Frontend UI framework" },
+      { name: "TypeScript", role: "Frontend type safety" },
+    ],
+    status: "live",
   },
   {
+    slug: "be2100-capstone",
     title: "BE2100 Capstone Project",
-    description: "A full-stack web application for managing and visualizing data. Built with Django and Sqlite, it provides a user-friendly interface for data analysis and reporting.",
+    description: "A full-stack web application for managing and visualizing data. Built with Django and SQLite, it provides a user-friendly interface for data analysis and reporting.",
+    overview:
+      "The BE2100 Capstone is a full-stack web application developed as the final project for a Biological Engineering course. " +
+      "It provides a data management and reporting platform built on Django and SQLite, allowing users to input experiment records, run basic statistical analyses, and visualize results through a browser-based interface. " +
+      "The project prioritized clean schema design, Django's ORM for structured data access, and clear data presentation without the overhead of a heavy frontend framework. " +
+      "All views are server-rendered, keeping the architecture simple and the deployment footprint small — the entire application ships as a self-contained Django project with an embedded SQLite database.",
     tags: ["Python", "Django", "SQLite", "Data Visualization"],
-    link: "https://be2100.jimweaver.com"
+    link: "https://be2100.jimweaver.com",
+    highlights: [
+      "Django ORM-backed data models for structured experiment record management",
+      "SQLite embedded database — zero infrastructure required to deploy",
+      "Server-rendered HTML views for data entry, analysis, and report generation",
+      "Basic charting and data visualization integrated directly into Django templates",
+      "Clean separation of data models, views, and templates following Django conventions",
+      "Self-contained deployment: the entire app ships as a single Django project",
+    ],
+    techStack: [
+      { name: "Python", role: "Application language" },
+      { name: "Django", role: "Web framework, ORM, and templating engine" },
+      { name: "SQLite", role: "Embedded relational database" },
+      { name: "Chart.js", role: "Client-side data visualization" },
+      { name: "HTML / CSS", role: "Server-rendered templates and styling" },
+    ],
+    status: "live",
   },
 ];
 

@@ -2,6 +2,7 @@
   import { portfolioState } from '../stores.svelte.js';
   import { projects } from '../data.js';
   import { observeProject } from '../actions.js';
+  import { router } from '../router.svelte.js';
 
   let visibleProjects = $state<Set<string>>(new Set());
 
@@ -44,6 +45,7 @@
       >
         <h3>{project.title}</h3>
         <p>{project.description}</p>
+
         <div class="project-tags">
           {#each project.tags as tag}
             <button
@@ -53,9 +55,23 @@
             >{tag}</button>
           {/each}
         </div>
-        <button onclick={() => window.open(project.link, '_blank')} class="view-btn">
-          View Project →
-        </button>
+
+        <div class="card-actions">
+          <!-- Navigate to the in-depth detail page -->
+          <button
+            class="details-btn"
+            onclick={() => router.navigate(`/project/${project.slug}`)}
+          >
+            Details →
+          </button>
+          <!-- Open the live deployment in a new tab -->
+          <button
+            class="view-btn"
+            onclick={() => window.open(project.link, '_blank')}
+          >
+            View Live ↗
+          </button>
+        </div>
       </div>
     {/each}
   </div>
@@ -119,7 +135,6 @@
     border: 1px solid #30363d;
     border-radius: 12px;
     padding: 1.5rem;
-    cursor: pointer;
     position: relative;
     overflow: hidden;
     opacity: 0;
@@ -129,6 +144,8 @@
       transform 0.5s ease,
       border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
       box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
   }
 
   .project-card:nth-child(1) { transition-delay: 0s; }
@@ -163,6 +180,10 @@
     box-shadow: 0 15px 40px rgba(163, 113, 247, 0.2);
   }
 
+  .project-card.revealed:hover {
+    transform: translateY(-8px);
+  }
+
   .project-card h3 {
     margin-bottom: 0.5rem;
     color: #79c0ff;
@@ -176,6 +197,7 @@
   .project-card p {
     color: #8b949e;
     margin-bottom: 1rem;
+    flex: 1;
   }
 
   /* Tags */
@@ -210,10 +232,36 @@
     color: #a371f7;
   }
 
+  /* Action button row */
+  .card-actions {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .details-btn {
+    padding: 0.5em 1.1em;
+    font-size: 0.9em;
+    background: linear-gradient(135deg, #79c0ff15, #a371f715);
+    border: 1px solid #79c0ff60;
+    color: #79c0ff;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+  }
+
+  .details-btn:hover {
+    background: linear-gradient(135deg, #79c0ff25, #a371f725);
+    border-color: #a371f7;
+    color: #a371f7;
+    box-shadow: none;
+  }
+
   .view-btn {
-    margin-top: 1rem;
-    padding: 0.5em 1em;
-    font-size: 0.95em;
+    padding: 0.5em 1.1em;
+    font-size: 0.9em;
   }
 
   /* Empty state */
@@ -257,6 +305,11 @@
       padding: 1.25rem;
     }
 
+    .card-actions {
+      flex-direction: column;
+    }
+
+    .details-btn,
     .view-btn {
       width: 100%;
       text-align: center;

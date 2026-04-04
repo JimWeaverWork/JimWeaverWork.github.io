@@ -1,63 +1,104 @@
 <script lang="ts">
   import { portfolioState } from '../stores.svelte.js';
   import { navSections } from '../data.js';
+  import { router } from '../router.svelte.js';
 
   let menuOpen = $state(false);
 
+  let isDetailPage = $derived(router.currentPath.startsWith('/project/'));
+
   function handleNavClick(id: string) {
     portfolioState.scrollToSection(id);
+    menuOpen = false;
+  }
+
+  function goHome() {
+    router.navigate('/');
     menuOpen = false;
   }
 </script>
 
 <header class:scrolled={portfolioState.scrollY > 50}>
   <nav>
-    <a href="/" class="logo">Jim Weaver</a>
+    <button class="logo" onclick={goHome}>Jim Weaver</button>
 
-    <!-- Desktop nav -->
-    <ul class="nav-links">
-      {#each navSections as id}
+    {#if isDetailPage}
+      <!-- On a project detail page show a single back link instead of section nav -->
+      <ul class="nav-links">
         <li>
-          <button
-            onclick={() => handleNavClick(id)}
-            class="nav-btn"
-            class:active={portfolioState.activeSection === id}
-          >
-            {id.charAt(0).toUpperCase() + id.slice(1)}
+          <button class="nav-btn back-nav" onclick={goHome}>
+            ← Back to Portfolio
           </button>
         </li>
-      {/each}
-    </ul>
+      </ul>
 
-    <!-- Hamburger button (mobile only) -->
-    <button
-      class="hamburger"
-      onclick={() => menuOpen = !menuOpen}
-      aria-label="Toggle navigation"
-      aria-expanded={menuOpen}
-    >
-      <span class:open={menuOpen}></span>
-      <span class:open={menuOpen}></span>
-      <span class:open={menuOpen}></span>
-    </button>
+      <!-- Mobile: same back button via hamburger -->
+      <button
+        class="hamburger"
+        onclick={() => menuOpen = !menuOpen}
+        aria-label="Toggle navigation"
+        aria-expanded={menuOpen}
+      >
+        <span class:open={menuOpen}></span>
+        <span class:open={menuOpen}></span>
+        <span class:open={menuOpen}></span>
+      </button>
+
+      {#if menuOpen}
+        <ul class="mobile-menu">
+          <li>
+            <button class="nav-btn mobile-nav-btn" onclick={goHome}>
+              ← Back to Portfolio
+            </button>
+          </li>
+        </ul>
+      {/if}
+
+    {:else}
+      <!-- Regular home-page section navigation -->
+      <ul class="nav-links">
+        {#each navSections as id}
+          <li>
+            <button
+              onclick={() => handleNavClick(id)}
+              class="nav-btn"
+              class:active={portfolioState.activeSection === id}
+            >
+              {id.charAt(0).toUpperCase() + id.slice(1)}
+            </button>
+          </li>
+        {/each}
+      </ul>
+
+      <button
+        class="hamburger"
+        onclick={() => menuOpen = !menuOpen}
+        aria-label="Toggle navigation"
+        aria-expanded={menuOpen}
+      >
+        <span class:open={menuOpen}></span>
+        <span class:open={menuOpen}></span>
+        <span class:open={menuOpen}></span>
+      </button>
+
+      {#if menuOpen}
+        <ul class="mobile-menu">
+          {#each navSections as id}
+            <li>
+              <button
+                onclick={() => handleNavClick(id)}
+                class="nav-btn mobile-nav-btn"
+                class:active={portfolioState.activeSection === id}
+              >
+                {id.charAt(0).toUpperCase() + id.slice(1)}
+              </button>
+            </li>
+          {/each}
+        </ul>
+      {/if}
+    {/if}
+
   </nav>
-
-  <!-- Mobile dropdown -->
-  {#if menuOpen}
-    <ul class="mobile-menu">
-      {#each navSections as id}
-        <li>
-          <button
-            onclick={() => handleNavClick(id)}
-            class="nav-btn mobile-nav-btn"
-            class:active={portfolioState.activeSection === id}
-          >
-            {id.charAt(0).toUpperCase() + id.slice(1)}
-          </button>
-        </li>
-      {/each}
-    </ul>
-  {/if}
 </header>
 
 <style>
@@ -83,17 +124,27 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
   }
 
   .logo {
     font-size: 1.5em;
     font-weight: 700;
     color: #79c0ff;
-    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+    transition: color 0.3s ease;
+    box-shadow: none;
   }
 
   .logo:hover {
     color: #a371f7;
+    border-color: transparent;
+    box-shadow: none;
   }
 
   .nav-links {
@@ -112,6 +163,7 @@
     font-weight: 500;
     position: relative;
     transition: color 0.3s ease;
+    box-shadow: none;
   }
 
   .nav-btn::after {
@@ -128,10 +180,20 @@
   .nav-btn.active,
   .nav-btn:hover {
     color: #79c0ff;
+    border-color: transparent;
+    box-shadow: none;
   }
 
   .nav-btn.active::after {
     width: 100%;
+  }
+
+  .back-nav {
+    color: #79c0ff;
+  }
+
+  .back-nav:hover {
+    color: #a371f7;
   }
 
   /* ── Hamburger ── */
@@ -146,6 +208,12 @@
     padding: 0.4em;
     width: 36px;
     height: 36px;
+    box-shadow: none;
+  }
+
+  .hamburger:hover {
+    border-color: transparent;
+    box-shadow: none;
   }
 
   .hamburger span {
@@ -180,6 +248,7 @@
     border-top: 1px solid #30363d;
     padding: 0.5rem 0;
     margin-top: 0.5rem;
+    width: 100%;
   }
 
   .mobile-nav-btn {
@@ -192,6 +261,8 @@
 
   .mobile-nav-btn:hover {
     background: #161b22;
+    border-color: transparent;
+    box-shadow: none;
   }
 
   @media (max-width: 768px) {
