@@ -1,7 +1,6 @@
-import type { SimpleIcon } from "simple-icons"
+import type { SimpleIcon } from "simple-icons";
 import { siGithub, siGmail } from "simple-icons";
 import linkedInIcon from "../assets/linkedin.svg?raw";
-
 
 export interface AboutMe {
   lead: string;
@@ -48,7 +47,7 @@ export interface Project {
   highlights: string[];
   /** Ordered list of technologies with their roles */
   techStack: TechDetail[];
-  status: 'live' | 'in-progress' | 'archived';
+  status: "live" | "in-progress" | "archived";
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -65,14 +64,14 @@ export interface SocialLink {
   icon: SimpleIcon | string;
 }
 
-export const navSections = ['about', 'projects', 'skills', 'contact'] as const;
-export type NavSection = typeof navSections[number] | 'home';
+export const navSections = ["about", "projects", "skills", "contact"] as const;
+export type NavSection = (typeof navSections)[number] | "home";
 
 export const heroTitles = [
-  'an Engineer',
-  'a Problem Solver',
-  'a Developer',
-  'an Innovator'
+  "an Engineer",
+  "a Problem Solver",
+  "a Developer",
+  "an Innovator",
 ];
 
 export const aboutMe: AboutMe = {
@@ -97,21 +96,59 @@ export const aboutMe: AboutMe = {
     { text: "echo $CURRENT_STACK", prompt: true },
     { text: "Rust · Python · PostgreSQL · Docker", output: true },
     { text: "git log --oneline -1", prompt: true },
-    { text: "a3f91bc  always be designing", output: true },
+    { text: "a3f91bc  always be building", output: true },
   ],
 };
 
 export const projects: Project[] = [
   {
+    slug: "oxyde",
+    title: "oxyde",
+    description:
+      "A simple application designed to learn the Tauri Rust framework and build a performant chat application that works on all hardward/platforms.",
+    overview:
+      "Oxyde is a small chat application built as an exploration of the Tauri framework and Rust's capabilities for building cross-platform desktop applications. " +
+      "The backend is a Rust module that manages chat rooms, messages, and user presence, and is compiled to a native binary that runs on the user's machine. " +
+      "The frontend is built with Svelte and TypeScript, providing a reactive UI that communicates with the Rust backend via Tauri's IPC system. " +
+      "SurrealDB is used as an embedded database to store messages and user data locally, with its native WebSocket support enabling real-time updates across multiple instances of the app. " +
+      "The project was an exercise in leveraging Rust's performance and safety guarantees to build a desktop application with a modern frontend stack, all while maintaining a single codebase that can be deployed across Windows, macOS, and Linux.",
+    tags: ["Rust", "Tauri", "SurrealDB", "TypeScript", "Svelte"],
+    link: "https://github.com/Qdust41/Oxyde",
+    highlights: [
+      "Rusts strengths in type saftey and performance ensure the app is always safe and fast",
+      "Tauri allows for a single codebase to be deployed on any platform and hardware with ease",
+      "SurrealDB provides a flexible and powerful database solution with native websocket support for realtime updates",
+      "Svelte provides a performant and reactive frontend experience without the overhead of a virtual DOM",
+    ],
+    techStack: [
+      { name: "Rust", role: "Language of choice for type safe performance" },
+      {
+        name: "Tauri",
+        role: "Framework of choice to integrate rust with any frontend setup",
+      },
+      {
+        name: "SurrelDB",
+        role: "Database of choice for Rust with native websocket support and a flexible query language",
+      },
+      { name: "TypeScript", role: "Frontend type safety and client bindings" },
+      {
+        name: "Svelte",
+        role: "Frontend framework for no dom manipulation and performant compiled code",
+      },
+    ],
+    status: "live",
+  },
+  {
     slug: "mixer",
     title: "mixer",
-    description: "A proof of concept twitter clone designed to test the ash framework and build out a fully functioning app that actual people can use.",
+    description:
+      "A proof of concept twitter clone designed to test the ash framework and build out a fully functioning app that actual people can use.",
     overview:
       "Mixer is a small twitter clone application that was built to explore the ash framework and flesh out an application where in theory it could gain a real userbase." +
       "It runs almost entirely on my machine or hardware I own, with the only service being the mailing service designed for use with Brevo for development." +
       "The backend is entirely done in elixir and utilizes ash typescript to create types and rpc modules for the frontend to use if they're not manage by phoenix." +
       "With it being built like this it allows for simple deployment on any machine or hardware and simple clustering from elixir.",
-    tags: ["Elixir", "Postgres", "Minio S3", "Typescript", "React"],
+    tags: ["Elixir", "Postgres", "Minio S3", "TypeScript", "React"],
     link: "https://mixer.jimweaver.com",
     highlights: [
       "Elixir strenghts utilized as a easy clustering and concurrent system",
@@ -121,7 +158,10 @@ export const projects: Project[] = [
       "Easy to use frontend with both mobile and desktop support",
     ],
     techStack: [
-      { name: "Elixir", role: "Backend business logic & server side rendering" },
+      {
+        name: "Elixir",
+        role: "Backend business logic & server side rendering",
+      },
       { name: "Postgres", role: "Database of choice for its basic durability" },
       { name: "Minio S3", role: "S3 bucket host for users media uploads" },
       { name: "TypeScript", role: "Frontend type safety and client bindings" },
@@ -132,7 +172,8 @@ export const projects: Project[] = [
   {
     slug: "anon-chat",
     title: "anon-chat",
-    description: "A small anonymous chat app built with Rust and SpacetimeDB with a React and TypeScript frontend. It is a realtime chat application that automatically deletes messages after 24 hours.",
+    description:
+      "A small anonymous chat app built with Rust and SpacetimeDB with a React and TypeScript frontend. It is a realtime chat application that automatically deletes messages after 24 hours.",
     overview:
       "anon-chat is a lightweight anonymous real-time messaging application built as an exploration of SpacetimeDB's WebAssembly module system. " +
       "The backend is a Rust module compiled to WASM and deployed directly inside SpacetimeDB, which manages the message store, enforces TTL logic to automatically expire messages after 24 hours, and pushes updates to all connected clients over SpacetimeDB's built-in subscription protocol. " +
@@ -149,10 +190,19 @@ export const projects: Project[] = [
       "Deployed and served via Cloudflare Pages for global low-latency access",
     ],
     techStack: [
-      { name: "Rust", role: "SpacetimeDB module / backend logic (compiled to WASM)" },
-      { name: "SpacetimeDB", role: "Database, real-time subscriptions, and WASM hosting" },
+      {
+        name: "Rust",
+        role: "SpacetimeDB module / backend logic (compiled to WASM)",
+      },
+      {
+        name: "SpacetimeDB",
+        role: "Database, real-time subscriptions, and WASM hosting",
+      },
       { name: "React", role: "Frontend UI framework" },
-      { name: "TypeScript", role: "Frontend type safety and SpacetimeDB client bindings" },
+      {
+        name: "TypeScript",
+        role: "Frontend type safety and SpacetimeDB client bindings",
+      },
       { name: "Cloudflare Pages", role: "Frontend hosting & CDN" },
     ],
     status: "live",
@@ -160,14 +210,15 @@ export const projects: Project[] = [
   {
     slug: "polyscope",
     title: "polyscope",
-    description: "A small lightweight data visualization tool built with Python and DuckDB that looks at some basic metrics from Polymarket and lets you organize and view them in a pleasant way.",
+    description:
+      "A small lightweight data visualization tool built with Python and DuckDB that looks at some basic metrics from Polymarket and lets you organize and view them in a pleasant way.",
     overview:
       "polyscope is a lightweight data visualization and exploration tool that ingests public market data from Polymarket's API and surfaces it in an organized, queryable interface. " +
       "The backend is a Python service that fetches and normalizes market data, caches responses in Redis to avoid hammering the upstream API, and stores records in an embedded DuckDB instance that supports fast analytical queries without any external database infrastructure. " +
       "The frontend is a React + TypeScript SPA that exposes filtering, sorting, and summary views over the market data. " +
       "The goal of the project was to make Polymarket's raw API data more approachable and visually digestible, with a focus on keeping the entire stack lightweight and self-contained.",
     tags: ["Python", "Redis", "Duckdb", "TypeScript", "React"],
-    link: "https://poly.jimweaver.com",
+    link: "https://polyscope.jimweaver.com",
     highlights: [
       "DuckDB embedded analytics engine enables fast aggregation queries with no external database infrastructure",
       "Redis caching layer minimizes redundant Polymarket API calls and smooths over rate limits",
@@ -183,33 +234,34 @@ export const projects: Project[] = [
       { name: "React", role: "Frontend UI framework" },
       { name: "TypeScript", role: "Frontend type safety" },
     ],
-    status: "live",
+    status: "archived",
   },
   {
     slug: "be2100-capstone",
     title: "BE2100 Capstone Project",
-    description: "A full-stack web application for managing and visualizing data. Built with Django and SQLite, it provides a user-friendly interface for data analysis and reporting.",
+    description:
+      "A full-stack web application for managing and visualizing data. Built with Django and SQLite, it provides a user-friendly interface for data analysis and reporting.",
     overview:
       "The BE2100 Capstone is a full-stack web application developed as the final project for a Basic Engineering course. " +
       "It provides a data management and reporting platform built on Django and SQLite, allowing users to input survey records, run basic statistical analyses, and visualize results through a browser-based interface. " +
       "The project prioritized clean schema design, Django's ORM for structured data access, and clear data presentation without the overhead of a heavy frontend framework. " +
       "All views are server-rendered, keeping the architecture simple and the deployment footprint small — the entire application ships as a self-contained Django project with an embedded SQLite database.",
-    tags: ["Python", "Django", "SQLite", "Data Visualization"],
+    tags: ["Python", "Django", "SQLite", "TypeScript", "Data Visualization"],
     link: "https://be2100.jimweaver.com",
     highlights: [
       "Django ORM-backed data models for structured experiment record management",
       "SQLite embedded database — zero infrastructure required to deploy",
-      "Server-rendered HTML views for data entry, analysis, and report generation",
-      "Basic charting and data visualization integrated directly into Django templates",
       "Clean separation of data models, views, and templates following Django conventions",
       "Self-contained deployment: the entire app ships as a single Django project",
+      "Rich charting and data visualization integrated directly React frontend",
+      "Type safe frontend with TypeScript and charting following clear and defined data contracts",
     ],
     techStack: [
       { name: "Python", role: "Application language" },
       { name: "Django", role: "Web framework, ORM, and templating engine" },
       { name: "SQLite", role: "Embedded relational database" },
+      { name: "React.ts", role: "Server-rendered templates and styling" },
       { name: "Chart.js", role: "Client-side data visualization" },
-      { name: "HTML / CSS", role: "Server-rendered templates and styling" },
     ],
     status: "live",
   },
@@ -217,13 +269,41 @@ export const projects: Project[] = [
 
 export const skills: SkillGroup[] = [
   { name: "Backend", items: ["Python", "Rust", "Elixir", "C++"] },
-  { name: "Databases", items: ["PostgreSQL", "SQLite", "Redis", "SpacetimeDB", "DuckDB"] },
+  {
+    name: "Databases",
+    items: [
+      "PostgreSQL",
+      "SQLite",
+      "Redis",
+      "Valkey",
+      "SurrealDB",
+      "Minio",
+      "GarageS3",
+      "SpacetimeDB",
+      "DuckDB",
+    ],
+  },
   { name: "DevOps", items: ["Docker", "GitHub Actions", "AWS", "Cloudflare"] },
   { name: "Frontend", items: ["TypeScript", "Svelte", "React", "Vue"] },
 ];
 
 export const socialLinks: SocialLink[] = [
-  { href: "https://github.com/JimWeaverWork", label: "GitHub", external: true, icon: siGithub },
-  { href: "https://www.linkedin.com/in/james-weaver-43bba5308", label: "Linkedin", external: true, icon: linkedInIcon },
-  { href: "mailto:jim.weaver.work@gmail.com", label: "Email", external: false, icon: siGmail },
+  {
+    href: "https://github.com/JimWeaverWork",
+    label: "GitHub",
+    external: true,
+    icon: siGithub,
+  },
+  {
+    href: "https://www.linkedin.com/in/james-weaver-43bba5308",
+    label: "Linkedin",
+    external: true,
+    icon: linkedInIcon,
+  },
+  {
+    href: "mailto:jim.weaver.work@gmail.com",
+    label: "Email",
+    external: false,
+    icon: siGmail,
+  },
 ];
