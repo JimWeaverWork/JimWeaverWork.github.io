@@ -4,6 +4,7 @@
   import { router } from './lib/router.svelte.js';
   import { projects } from './lib/data.js';
 
+  import Backdrop from './lib/components/Backdrop.svelte';
   import Header from './lib/components/Header.svelte';
   import Hero from './lib/components/Hero.svelte';
   import About from './lib/components/About.svelte';
@@ -32,6 +33,8 @@
 
 <!-- Track scroll for progress bar + active-section highlighting on the home page -->
 <svelte:window onscroll={isHome ? () => portfolioState.setScrollY(window.scrollY) : undefined} />
+
+<Backdrop />
 
 <Header />
 
