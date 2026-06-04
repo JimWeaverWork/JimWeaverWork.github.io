@@ -1,318 +1,133 @@
 <script lang="ts">
-  import { portfolioState } from '../stores.svelte.js';
-  import { projects } from '../data.js';
-  import { observeProject } from '../actions.js';
+  import { projects, STATUS_META } from '../data.js';
   import { router } from '../router.svelte.js';
 
-  let visibleProjects = $state<Set<string>>(new Set());
+  type SortKey = 'year' | 'title' | 'status';
 
-  const allTags = $derived([...new Set(projects.flatMap(p => p.tags))]);
-  const filteredProjects = $derived(
-    portfolioState.filterTag
-      ? projects.filter(p => p.tags.includes(portfolioState.filterTag!))
-      : projects
-  );
+  const all = projects;
+  const allTags = [...new Set(all.flatMap((p) => p.tags))];
 
-  function onProjectVisible(title: string) {
-    visibleProjects = new Set([...visibleProjects, title]);
+  let picked = $state<string[]>([]);
+  let sort = $state<SortKey>('year');
+  let running = $state(false);
+  let execMs = $state('0.40');
+
+  function toggle(t: string) {
+    picked = picked.includes(t) ? picked.filter((x) => x !== t) : [...picked, t];
+  }
+  function clear() { picked = []; }
+  function cycleSort() {
+    sort = sort === 'year' ? 'title' : sort === 'title' ? 'status' : 'year';
+  }
+
+  let results = $derived.by(() => {
+    const r = picked.length ? all.filter((p) => picked.some((t) => p.tags.includes(t))) : all.slice();
+    if (sort === 'year') r.sort((a, b) => b.year.localeCompare(a.year));
+    else if (sort === 'title') r.sort((a, b) => a.title.localeCompare(b.title));
+    else r.sort((a, b) => a.status.localeCompare(b.status));
+    return r;
+  });
+
+  let sig = $derived(picked.join(',') + '|' + sort);
+  let sortLabel = $derived(sort === 'year' ? 'year DESC' : sort === 'title' ? 'title ASC' : 'status ASC');
+
+  // simulate query execution whenever the query changes
+  $effect(() => {
+    sig; // track
+    running = true;
+    execMs = (0.18 + Math.random() * 0.9).toFixed(2);
+    const t = setTimeout(() => (running = false), 380);
+    return () => clearTimeout(t);
+  });
+
+  function open(slug: string) {
+    router.navigate(`/project/${slug}`);
   }
 </script>
 
-<section id="projects" class="projects-section">
-  <h2>Featured Projects</h2>
-
-  <div class="tag-filter">
-    <button
-      class="filter-btn"
-      class:active-filter={portfolioState.filterTag === null}
-      onclick={() => portfolioState.clearFilterTag()}
-    >All</button>
-    {#each allTags as tag}
-      <button
-        class="filter-btn"
-        class:active-filter={portfolioState.filterTag === tag}
-        onclick={() => portfolioState.toggleFilterTag(tag)}
-      >{tag}</button>
-    {/each}
+<section class="section wrap" id="projects">
+  <div class="section-head">
+    <span class="section-idx">02</span>
+    <h2 class="section-title">Work</h2>
+    <span class="section-meta">// query the project store</span>
   </div>
 
-  <div class="projects-grid">
-    {#each filteredProjects as project (project.title)}
-      <div
-        class="project-card"
-        class:revealed={visibleProjects.has(project.title)}
-        use:observeProject={{ title: project.title, onVisible: onProjectVisible }}
-      >
-        <h3>{project.title}</h3>
-        <p>{project.description}</p>
+  <div class="qbox">
+    <div class="qbox-head">
+      <span>QUERY CONSOLE</span>
+      <span>projects.db</span>
+      <span class="live"><span class="led live"></span>CONNECTED</span>
+    </div>
 
-        <div class="project-tags">
-          {#each project.tags as tag}
-            <button
-              class="tag"
-              class:tag-active={portfolioState.filterTag === tag}
-              onclick={() => portfolioState.toggleFilterTag(tag)}
-            >{tag}</button>
-          {/each}
-        </div>
+    <div class="qsql">
+      <span class="kw">SELECT</span> <span class="mut">*</span> <span class="kw">FROM</span> <span class="fn">projects</span><br />
+      {#if picked.length > 0}
+        <span class="kw">WHERE</span> <span class="mut">tag</span> <span class="kw">IN</span> <span class="mut">(</span>
+        {#each picked as t (t)}
+          <button class="pred" onclick={() => toggle(t)} title="remove predicate">
+            '{t}' <span class="x">✕</span>
+          </button>
+        {/each}
+        <span class="mut">)</span><br />
+      {:else}
+        <span class="mut">/* no filter — full table scan */</span><br />
+      {/if}
+      <span class="kw">ORDER BY</span> <span class="mut">{sortLabel}</span><span class="caret"></span>
+    </div>
 
-        <div class="card-actions">
-          <!-- Navigate to the in-depth detail page -->
-          <button
-            class="details-btn"
-            onclick={() => router.navigate(`/project/${project.slug}`)}
-          >
-            Details →
-          </button>
-          <!-- Open the live deployment in a new tab -->
-          <button
-            class="view-btn"
-            onclick={() => window.open(project.link, '_blank')}
-          >
-            View Live ↗
-          </button>
-        </div>
+    <div class="qpalette">
+      <span class="lbl">+WHERE</span>
+      {#each allTags as t (t)}
+        <button class="qtag" class:on={picked.includes(t)} onclick={() => toggle(t)}>{t}</button>
+      {/each}
+      <div class="qctrl">
+        <button class="qbtn" onclick={cycleSort}>ORDER BY: {sort.toUpperCase()} ↕</button>
+        <button class="qbtn" onclick={clear} disabled={!picked.length}>CLEAR</button>
       </div>
-    {/each}
+    </div>
   </div>
 
-  {#if filteredProjects.length === 0}
-    <p class="no-results">
-      No projects match that filter.
-      <button onclick={() => portfolioState.clearFilterTag()} class="clear-btn">
-        Clear filter
-      </button>
-    </p>
+  <div class="qstatus">
+    {#if running}
+      <span class="led active"></span><span class="run">executing query…</span>
+    {:else}
+      <span class="ok">▸ {results.length} {results.length === 1 ? 'row' : 'rows'} returned</span>
+      <span>·</span><span class="tnum">{execMs}ms</span>
+      <span>·</span><span>sorted by {sortLabel.toLowerCase()}</span>
+    {/if}
+  </div>
+
+  {#if !running}
+    {#key sig}
+      <div class="rows">
+        {#if results.length === 0}
+          <div class="qempty">
+            0 rows match that predicate. <button onclick={clear}>reset query</button>
+          </div>
+        {:else}
+          {#each results as p, i (p.slug)}
+            <div class="prow" style="animation-delay: {i * 70}ms" onclick={() => open(p.slug)} role="presentation">
+              <div class="prow-top">
+                <span class="ix">{String(i).padStart(2, '0')}</span>
+                <span class="nm">{p.title}</span>
+                <span class="lead"></span>
+                <span class="yr tnum">{p.year}</span>
+                <span class="badge"><span class="led {STATUS_META[p.status].cls}"></span>{STATUS_META[p.status].word}</span>
+              </div>
+              <p class="desc">{p.description}</p>
+              <div class="prow-bot">
+                {#each p.tags as t (t)}
+                  <span class="ptag" class:match={picked.includes(t)}>{t}</span>
+                {/each}
+                <div class="prow-act">
+                  <button class="pact" onclick={(e) => { e.stopPropagation(); open(p.slug); }}>DETAILS →</button>
+                  <button class="pact live" onclick={(e) => { e.stopPropagation(); window.open(p.link, '_blank'); }}>VIEW LIVE ↗</button>
+                </div>
+              </div>
+            </div>
+          {/each}
+        {/if}
+      </div>
+    {/key}
   {/if}
 </section>
-
-<style>
-  .projects-section {
-    background-color: var(--background-color2);
-  }
-
-  /* Tag filter bar */
-  .tag-filter {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin: 1.5em 0;
-  }
-
-  .filter-btn {
-    padding: 0.35em 1em;
-    border-radius: 20px;
-    border: 1px solid #30363d;
-    background: #0d1117;
-    color: #8b949e;
-    cursor: pointer;
-    font-size: 0.9em;
-    transition: all 0.2s ease;
-  }
-
-  .filter-btn:hover {
-    border-color: #79c0ff;
-    color: #79c0ff;
-  }
-
-  .filter-btn.active-filter {
-    background: linear-gradient(135deg, #79c0ff20, #a371f720);
-    border-color: #a371f7;
-    color: #a371f7;
-  }
-
-  /* Grid */
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-top: 2em;
-  }
-
-  /* Cards */
-  .project-card {
-    background-color: #0d1117;
-    border: 1px solid #30363d;
-    border-radius: 12px;
-    padding: 1.5rem;
-    position: relative;
-    overflow: hidden;
-    opacity: 0;
-    transform: translateY(20px);
-    transition:
-      opacity 0.5s ease,
-      transform 0.5s ease,
-      border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-      box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex;
-    flex-direction: column;
-  }
-
-  .project-card:nth-child(1) { transition-delay: 0s; }
-  .project-card:nth-child(2) { transition-delay: 0.1s; }
-  .project-card:nth-child(3) { transition-delay: 0.2s; }
-  .project-card:nth-child(4) { transition-delay: 0.3s; }
-
-  .project-card.revealed {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .project-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #79c0ff, #a371f7);
-    transform: translateX(-100%);
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .project-card:hover::before {
-    transform: translateX(0);
-  }
-
-  .project-card:hover {
-    border-color: #a371f7;
-    transform: translateY(-8px);
-    box-shadow: 0 15px 40px rgba(163, 113, 247, 0.2);
-  }
-
-  .project-card.revealed:hover {
-    transform: translateY(-8px);
-  }
-
-  .project-card h3 {
-    margin-bottom: 0.5rem;
-    color: #79c0ff;
-    transition: color 0.3s ease;
-  }
-
-  .project-card:hover h3 {
-    color: #a371f7;
-  }
-
-  .project-card p {
-    color: #8b949e;
-    margin-bottom: 1rem;
-    flex: 1;
-  }
-
-  /* Tags */
-  .project-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 1rem;
-  }
-
-  .tag {
-    display: inline-block;
-    background-color: #161b22;
-    color: #79c0ff;
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
-    font-size: 0.85em;
-    border: 1px solid #30363d;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-family: inherit;
-  }
-
-  .tag:hover {
-    background-color: #30363d;
-    border-color: #79c0ff;
-  }
-
-  .tag.tag-active {
-    background: #79c0ff20;
-    border-color: #a371f7;
-    color: #a371f7;
-  }
-
-  /* Action button row */
-  .card-actions {
-    display: flex;
-    gap: 0.6rem;
-    margin-top: 1.25rem;
-    flex-wrap: wrap;
-  }
-
-  .details-btn {
-    padding: 0.5em 1.1em;
-    font-size: 0.9em;
-    background: linear-gradient(135deg, #79c0ff15, #a371f715);
-    border: 1px solid #79c0ff60;
-    color: #79c0ff;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-family: inherit;
-  }
-
-  .details-btn:hover {
-    background: linear-gradient(135deg, #79c0ff25, #a371f725);
-    border-color: #a371f7;
-    color: #a371f7;
-    box-shadow: none;
-  }
-
-  .view-btn {
-    padding: 0.5em 1.1em;
-    font-size: 0.9em;
-  }
-
-  /* Empty state */
-  .no-results {
-    text-align: center;
-    color: #8b949e;
-    margin-top: 2rem;
-  }
-
-  .clear-btn {
-    background: none;
-    border: none;
-    color: #79c0ff;
-    cursor: pointer;
-    padding: 0;
-    font-size: inherit;
-  }
-
-  @media (max-width: 768px) {
-    .projects-section {
-      border-radius: 0px;
-    }
-
-    .projects-grid {
-      grid-template-columns: 1fr;
-      gap: 1.25rem;
-    }
-
-    .tag-filter {
-      gap: 0.4rem;
-    }
-
-    .filter-btn {
-      font-size: 0.82em;
-      padding: 0.3em 0.8em;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .project-card {
-      padding: 1.25rem;
-    }
-
-    .card-actions {
-      flex-direction: column;
-    }
-
-    .details-btn,
-    .view-btn {
-      width: 100%;
-      text-align: center;
-    }
-  }
-</style>

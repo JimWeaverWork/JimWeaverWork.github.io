@@ -1,216 +1,128 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { identity } from '../data.js';
   import { portfolioState } from '../stores.svelte.js';
-  import { heroTitles } from '../data.js';
 
-  let visible = $state(false);
-  let typewriterText = $state('');
-  let titleIndex = $state(0);
+  const RESUME_URL = '/JimWeaver_Resume.pdf';
 
-  async function typewriter(text: string) {
-    typewriterText = '';
-    for (let i = 0; i <= text.length; i++) {
-      typewriterText = text.slice(0, i);
-      await new Promise(r => setTimeout(r, 80));
-    }
-    await new Promise(r => setTimeout(r, 1800));
-    for (let i = text.length; i >= 0; i--) {
-      typewriterText = text.slice(0, i);
-      await new Promise(r => setTimeout(r, 40));
-    }
-  }
+  // decrypt-scramble name reveal
+  let display = $state(identity.name);
+  let mounted = $state(false);
 
-  async function runTypewriterLoop() {
-    while (true) {
-      await typewriter(heroTitles[titleIndex % heroTitles.length]);
-      titleIndex++;
-    }
-  }
+  // ticking system clock
+  let now = $state(new Date());
 
-  function downloadResume() {
-    const resumeUrl = '/JimWeaver_Resume.pdf';
-    const link = document.createElement('a');
-    link.href = resumeUrl;
-    link.download = 'JimWeaver_Resume.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
+  // static barcode pattern (generated once)
+  const bars = Array.from({ length: 46 }, () => 1 + Math.floor(Math.random() * 4));
 
   onMount(() => {
-    visible = true;
-    runTypewriterLoop();
+    const boot = setTimeout(() => (mounted = true), 180);
+    const clock = setInterval(() => (now = new Date()), 1000);
+    return () => { clearTimeout(boot); clearInterval(clock); };
   });
+
+  $effect(() => {
+    if (!mounted) return;
+    const text = identity.name;
+    const glyphs = 'ABCDEFGHJKLMNPQRSTUVWXYZ#%&$@/\\<>*';
+    let frame = 0;
+    const total = text.length;
+    const id = setInterval(() => {
+      frame++;
+      const revealed = Math.floor(frame / 2);
+      let s = '';
+      for (let i = 0; i < total; i++) {
+        if (text[i] === ' ') { s += ' '; continue; }
+        s += i < revealed ? text[i] : glyphs[Math.floor(Math.random() * glyphs.length)];
+      }
+      display = s;
+      if (revealed >= total) { clearInterval(id); display = text; }
+    }, 30);
+    return () => clearInterval(id);
+  });
+
+  const pad = (n: number) => String(n).padStart(2, '0');
+  let hh = $derived(pad(now.getHours()));
+  let mm = $derived(pad(now.getMinutes()));
+  let ss = $derived(pad(now.getSeconds()));
+
+  function openResume() {
+    window.open(RESUME_URL, '_blank');
+  }
 </script>
 
-<section class="hero">
-  <div class="hero-content" class:visible>
-    <p class="hero-eyebrow">Welcome to my portfolio</p>
-    <h1>Hello, I'm<br /><span class="typewriter-text">{typewriterText}<span class="cursor">|</span></span></h1>
-    <p>I design performant backends with scalability, saftey, and security in mind.</p>
-    <div class="hero-buttons">
-      <button onclick={() => portfolioState.scrollToSection('projects')} class="btn-primary">
-        View My Work
-      </button>
-      <button onclick={downloadResume} class="btn-secondary">
-        Download Resume
-      </button>
+<section class="hero wrap" id="top">
+  <div class="hero-grid">
+    <div class="hero-main">
+      <div class="hero-tag">
+        <span class="pn">P/N · JW—2026</span>
+        <span class="sep"></span>
+        <span>REV 4.0</span>
+      </div>
+
+      <h1 class="hero-name">
+        {display.slice(0, 3)}<span class="lo">{display.slice(3)}</span>
+      </h1>
+      <div class="hero-role">{identity.role}<span class="caret"></span></div>
+      <p class="hero-line">{identity.oneLiner}</p>
+
+      <div class="hero-status">
+        {#each identity.status as s (s.label)}
+          <div class="chip-status">
+            <span class="led {s.state}"></span>{s.label}
+          </div>
+        {/each}
+      </div>
+
+      <div class="hero-stack">
+        <span class="lbl">STACK //</span>
+        {#each identity.stack as s (s)}
+          <span class="chip">{s}</span>
+        {/each}
+      </div>
+
+      <div class="hero-cta">
+        <button class="btn btn-primary" onclick={() => portfolioState.scrollToSection('projects')}>
+          VIEW WORK <span class="ar">→</span>
+        </button>
+        <button class="btn btn-ghost" onclick={openResume}>
+          <span class="ar">↓</span> RESUME.PDF
+        </button>
+        <button class="btn btn-ghost" onclick={() => portfolioState.scrollToSection('contact')}>
+          CONTACT
+        </button>
+      </div>
+
+      <div class="scroll-hint">
+        <span class="arw">▼</span> SCROLL TO BOOT &nbsp;·&nbsp; 00 → 04
+      </div>
     </div>
+
+    <aside class="hero-side">
+      <div class="side-head">
+        <span>SPEC SHEET</span>
+        <span class="dots"><i></i><i></i><i></i></span>
+      </div>
+      <div class="side-body">
+        <div class="spec-row"><span class="k">HANDLE</span><span class="v">@{identity.handle}</span></div>
+        <div class="spec-row"><span class="k">ROLE</span><span class="v">Backend / Systems</span></div>
+        <div class="spec-row"><span class="k">LOCATION</span><span class="v">{identity.location}</span></div>
+        <div class="spec-row"><span class="k">STUDYING</span><span class="v">Electrical &amp; Computer Eng.</span></div>
+        <div class="spec-row"><span class="k">FOCUS</span><span class="v">Distributed systems · DBs</span></div>
+        <div class="spec-row"><span class="k">AVAIL</span><span class="v"><span class="a">● open to work</span></span></div>
+        <div class="barcode">
+          {#each bars as w, i (i)}
+            <i style="width: {w}px; opacity: {i % 3 === 0 ? 0.55 : 0.9}"></i>
+          {/each}
+        </div>
+      </div>
+      <div class="side-clock">
+        <div>
+          <div class="z">SYS&nbsp;TIME</div>
+          <div class="t tnum">{hh}:{mm}<span style="color: var(--ink-faint); font-size: 16px">:{ss}</span></div>
+        </div>
+        <span class="led live"></span>
+      </div>
+    </aside>
   </div>
 </section>
-
-<style>
-  .hero {
-    min-height: 80vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, rgba(13, 17, 23, 1) 0%, rgba(13, 17, 23, 0.8) 100%);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, rgba(163, 113, 247, 0.1) 0%, transparent 70%);
-    border-radius: 50%;
-  }
-
-  .hero-content {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
-  }
-
-  .hero-content.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .hero-eyebrow {
-    font-size: 0.95em;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: #a371f7;
-    margin-bottom: 0.5em;
-  }
-
-  /* Override global h1 for hero */
-  .hero :global(h1),
-  .hero-content h1 {
-    background: linear-gradient(135deg, #79c0ff 0%, #a371f7 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    font-size: 4em;
-    margin-bottom: 0.5em;
-  }
-
-  .hero-content p {
-    font-size: 1.3em;
-    color: #8b949e;
-    margin-bottom: 2em;
-  }
-
-  .typewriter-text {
-    background: linear-gradient(135deg, #79c0ff 0%, #a371f7 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .cursor {
-    -webkit-text-fill-color: #a371f7;
-    animation: blink 1s step-end infinite;
-  }
-
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50%       { opacity: 0; }
-  }
-
-  .hero-buttons {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  .btn-primary {
-    padding: 0.8em 2em;
-    font-size: 1.1em;
-    background: linear-gradient(135deg, #79c0ff 0%, #a371f7 100%);
-    border: none;
-    color: #0d1117;
-    font-weight: 600;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  .btn-primary:hover {
-    background: linear-gradient(135deg, #a371f7 0%, #79c0ff 100%);
-    box-shadow: 0 0 30px rgba(163, 113, 247, 0.5);
-    transform: translateY(-2px);
-  }
-
-  .btn-secondary {
-    padding: 0.8em 2em;
-    font-size: 1.1em;
-    background: transparent;
-    border: 2px solid #30363d;
-    border-radius: 8px;
-    color: #c9d1d9;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  .btn-secondary:hover {
-    border-color: #a371f7;
-    color: #a371f7;
-    transform: translateY(-2px);
-  }
-
-  @media (max-width: 768px) {
-    .hero {
-      min-height: 70vh;
-      padding: 2rem 1.25rem;
-    }
-
-    .hero-content h1 {
-      font-size: 2.5em;
-    }
-
-    .hero-content p {
-      font-size: 1.1em;
-    }
-
-    .hero-buttons {
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .hero-buttons button {
-      width: 100%;
-      max-width: 260px;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .hero-content h1 {
-      font-size: 2em;
-    }
-
-    .hero-eyebrow {
-      font-size: 0.8em;
-    }
-  }
-</style>
