@@ -173,6 +173,58 @@ export interface Project {
 
 export const projects: Project[] = [
     {
+        slug: "nodepad",
+        title: "nodepad",
+        year: "2026",
+        description:
+            "A real-time multiplayer graph notebook — Obsidian-style notes with a shared layout, live presence, and AI semantic search.",
+        overview:
+            "nodepad is an Obsidian-like graph notebook built around real-time multiplayer graphs. The backend is a Go service running on AWS Lambda behind an HTTP API; it verifies a Supabase access token on every request and authorizes by graph membership, so each user can keep multiple notebooks and share any of them with collaborators by email. Notes (nodes), links (edges), shared layout, membership, and profiles all live in Supabase Postgres, with Row-Level Security gating each member's direct Realtime subscription. Several people can view and edit one graph at once and it looks identical for everyone — node coordinates live server-side and propagate over Supabase Realtime, while a presence layer shows collaborators' cursors and in-flight drags. pgvector powers AI \"related notes\" semantic search across a graph's notes. The Svelte + TypeScript frontend is served from CloudFront/S3 and opens on a dashboard of the user's graphs.",
+        tags: ["Go", "Supabase", "AWS Lambda", "Svelte", "TypeScript"],
+        link: "https://nodepad.jimweaver.com",
+        status: "live",
+        highlights: [
+            "Go Lambda API verifies a Supabase JWT on every request and authorizes by graph membership",
+            "Real-time multiplayer: shared server-side layout plus live cursors and drags over Supabase Realtime",
+            "AI \"related notes\" semantic search backed by pgvector embeddings, re-indexed on save",
+            "Obsidian-style @[note-links] reconciled into graph edges in a single round trip",
+            "Postgres Row-Level Security gates each member's direct Realtime subscription",
+            "Deployed on AWS SAM — Lambda + HTTP API + CloudFront/S3 behind a single origin",
+        ],
+        techStack: [
+            {
+                name: "Go",
+                role: "Lambda API: chi router + JWT auth",
+                layer: "backend",
+            },
+            {
+                name: "Supabase",
+                role: "Postgres + Auth + Realtime",
+                layer: "data",
+            },
+            {
+                name: "pgvector",
+                role: "Vector embeddings for AI search",
+                layer: "data",
+            },
+            {
+                name: "AWS Lambda",
+                role: "Serverless API host (AWS SAM)",
+                layer: "infra",
+            },
+            {
+                name: "Svelte",
+                role: "Compiled, no-VDOM reactive UI",
+                layer: "frontend",
+            },
+            {
+                name: "TypeScript",
+                role: "Frontend type safety & bindings",
+                layer: "frontend",
+            },
+        ],
+    },
+    {
         slug: "oxyde",
         title: "oxyde",
         year: "2025",
@@ -394,11 +446,13 @@ export interface SkillGroup {
 }
 
 export const skills: SkillGroup[] = [
-    { name: "Backend", items: ["Python", "Rust", "Elixir", "C++"] },
+    { name: "Backend", items: ["Python", "Rust", "Go", "Elixir", "C++"] },
     {
         name: "Databases",
         items: [
             "PostgreSQL",
+            "Supabase",
+            "pgvector",
             "SQLite",
             "Redis",
             "Valkey",
@@ -411,7 +465,7 @@ export const skills: SkillGroup[] = [
     },
     {
         name: "DevOps",
-        items: ["Docker", "GitHub Actions", "AWS", "Cloudflare"],
+        items: ["Docker", "GitHub Actions", "AWS", "AWS SAM", "Cloudflare"],
     },
     { name: "Frontend", items: ["TypeScript", "Svelte", "React", "Vue"] },
 ];
