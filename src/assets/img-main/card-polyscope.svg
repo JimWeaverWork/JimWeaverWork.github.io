@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 340" preserveAspectRatio="xMidYMid slice" width="640" height="340">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8a0b50"/>
+      <stop offset="0.55" stop-color="#5a061f"/>
+      <stop offset="1" stop-color="#1c0220"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#ff5a76"/>
+      <stop offset="0.4" stop-color="#f70032" stop-opacity="0.8"/>
+      <stop offset="1" stop-color="#f70032" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0.55" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0.5"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="340" fill="url(#sky)"/>
+  <circle cx="470" cy="97.9" r="119.6" fill="url(#glow)"/>
+  <circle cx="470" cy="97.9" r="49.9" fill="#ff2c4e"/>
+    <path d="M-20 200.8L70.6 205.4L-20 246.1Z" fill="#620727"/>
+    <path d="M-20 246.1L70.6 205.4L47.1 242.6Z" fill="#4d0524"/>
+    <path d="M70.6 205.4L133.7 210.8L47.1 242.6Z" fill="#5f0727"/>
+    <path d="M47.1 242.6L133.7 210.8L128.4 232.6Z" fill="#4a0523"/>
+    <path d="M133.7 210.8L216.4 195.1L128.4 232.6Z" fill="#5b0726"/>
+    <path d="M128.4 232.6L216.4 195.1L219.9 251.8Z" fill="#520625"/>
+    <path d="M216.4 195.1L262.2 202.6L219.9 251.8Z" fill="#690829"/>
+    <path d="M219.9 251.8L262.2 202.6L269.5 234.2Z" fill="#670828"/>
+    <path d="M262.2 202.6L362.9 196L269.5 234.2Z" fill="#78092b"/>
+    <path d="M269.5 234.2L362.9 196L350.3 238.1Z" fill="#9c0c31"/>
+    <path d="M362.9 196L413.2 197.2L350.3 238.1Z" fill="#a50d33"/>
+    <path d="M350.3 238.1L413.2 197.2L419.7 239.2Z" fill="#b20e35"/>
+    <path d="M413.2 197.2L525.8 202.9L419.7 239.2Z" fill="#d7123c"/>
+    <path d="M419.7 239.2L525.8 202.9L489.1 232.9Z" fill="#bc0f37"/>
+    <path d="M525.8 202.9L601.3 210.4L489.1 232.9Z" fill="#c41038"/>
+    <path d="M489.1 232.9L601.3 210.4L597.3 239.8Z" fill="#b10e35"/>
+    <path d="M601.3 210.4L660 193.7L597.3 239.8Z" fill="#990c31"/>
+    <path d="M597.3 239.8L660 193.7L660 250.5Z" fill="#6e082a"/>
+    <path d="M-20 246.1L47.1 242.6L-20 294.9Z" fill="#500524"/>
+    <path d="M-20 294.9L47.1 242.6L44.5 281.3Z" fill="#380320"/>
+    <path d="M47.1 242.6L128.4 232.6L44.5 281.3Z" fill="#3f0421"/>
+    <path d="M44.5 281.3L128.4 232.6L128.4 301.9Z" fill="#400422"/>
+    <path d="M128.4 232.6L219.9 251.8L128.4 301.9Z" fill="#480523"/>
+    <path d="M128.4 301.9L219.9 251.8L204.7 299.1Z" fill="#3f0421"/>
+    <path d="M219.9 251.8L269.5 234.2L204.7 299.1Z" fill="#500524"/>
+    <path d="M204.7 299.1L269.5 234.2L271.2 306Z" fill="#3d0421"/>
+    <path d="M269.5 234.2L350.3 238.1L271.2 306Z" fill="#680828"/>
+    <path d="M271.2 306L350.3 238.1L370.5 285.8Z" fill="#610727"/>
+    <path d="M350.3 238.1L419.7 239.2L370.5 285.8Z" fill="#a40d33"/>
+    <path d="M370.5 285.8L419.7 239.2L423.6 296.4Z" fill="#880b2e"/>
+    <path d="M419.7 239.2L489.1 232.9L423.6 296.4Z" fill="#b00e35"/>
+    <path d="M423.6 296.4L489.1 232.9L507.8 299Z" fill="#ab0e34"/>
+    <path d="M489.1 232.9L597.3 239.8L507.8 299Z" fill="#980c31"/>
+    <path d="M507.8 299L597.3 239.8L602.9 278.8Z" fill="#830a2d"/>
+    <path d="M597.3 239.8L660 250.5L602.9 278.8Z" fill="#7c092c"/>
+    <path d="M602.9 278.8L660 250.5L660 287.7Z" fill="#540625"/>
+    <path d="M-20 294.9L44.5 281.3L-20 340Z" fill="#2d021e"/>
+    <path d="M-20 340L44.5 281.3L62.3 340Z" fill="#27021d"/>
+    <path d="M44.5 281.3L128.4 301.9L62.3 340Z" fill="#370320"/>
+    <path d="M62.3 340L128.4 301.9L113.1 340Z" fill="#15001a"/>
+    <path d="M128.4 301.9L204.7 299.1L113.1 340Z" fill="#29021d"/>
+    <path d="M113.1 340L204.7 299.1L224.3 340Z" fill="#16001a"/>
+    <path d="M204.7 299.1L271.2 306L224.3 340Z" fill="#24011d"/>
+    <path d="M224.3 340L271.2 306L267.6 340Z" fill="#350320"/>
+    <path d="M271.2 306L370.5 285.8L267.6 340Z" fill="#590626"/>
+    <path d="M267.6 340L370.5 285.8L380.5 340Z" fill="#630728"/>
+    <path d="M370.5 285.8L423.6 296.4L380.5 340Z" fill="#79092b"/>
+    <path d="M380.5 340L423.6 296.4L452.5 340Z" fill="#8a0b2e"/>
+    <path d="M423.6 296.4L507.8 299L452.5 340Z" fill="#860a2e"/>
+    <path d="M452.5 340L507.8 299L495.5 340Z" fill="#8a0b2e"/>
+    <path d="M507.8 299L602.9 278.8L495.5 340Z" fill="#8f0b2f"/>
+    <path d="M495.5 340L602.9 278.8L585.7 340Z" fill="#7f0a2d"/>
+    <path d="M602.9 278.8L660 287.7L585.7 340Z" fill="#690829"/>
+    <path d="M585.7 340L660 287.7L660 340Z" fill="#510624"/>
+  <rect width="640" height="340" fill="url(#ground)"/>
+  <rect x="38" y="266" width="58" height="5" rx="2.5" fill="#ff2c4e"/>
+  <text x="36" y="306" font-family="system-ui, -apple-system, sans-serif" font-size="46" font-weight="700" fill="#ffffff" paint-order="stroke" stroke="#1c0212" stroke-width="3" stroke-opacity="0.55" stroke-linejoin="round">polyscope</text>
+</svg>

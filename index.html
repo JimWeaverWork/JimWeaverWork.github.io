@@ -2,18 +2,153 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <link rel="icon" type="image/webp" href="/src/assets/logo.webp" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Space+Mono:wght@400;700&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      href="/fonts/trebuc.woff"
+      as="font"
+      type="font/woff"
+      crossorigin
     />
-    <title>Jim Weaver — Backend / Systems Engineer</title>
+    <link
+      rel="preload"
+      href="/fonts/SF-Pro-Display-Light.otf"
+      as="font"
+      type="font/otf"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/SF-Pro-Display-Bold.otf"
+      as="font"
+      type="font/otf"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/Segoe UI.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+    <title>Jim Weaver</title>
+    <link rel="stylesheet" href="/index.css" />
   </head>
+  <style>
+    html,
+    body {
+      margin: 0;
+    }
+
+    div.loading {
+      height: 100vh;
+      width: 100%;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 99;
+      background-color: black;
+    }
+
+    div.loadwrapper img {
+      width: 8rem;
+      animation: rotate 1.5s 0s linear infinite;
+    }
+
+    body::-webkit-scrollbar {
+      display: none;
+    }
+
+    @keyframes rotate {
+      from {
+        rotate: 0deg;
+      }
+
+      to {
+        rotate: 360deg;
+      }
+    }
+  </style>
+
   <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
+    <div id="root">
+      <div class="loading" id="splash">
+        <div class="loadwrapper">
+          <img src="src/assets/img-commons/spinner.png" />
+        </div>
+        <p
+          style="
+            font-size: 1.5em;
+            margin-top: 1rem;
+            color: white !important;
+            font-family:
+              system-ui,
+              -apple-system,
+              BlinkMacSystemFont,
+              &quot;Segoe UI&quot;,
+              Roboto,
+              Oxygen,
+              Ubuntu,
+              Cantarell,
+              &quot;Open Sans&quot;,
+              &quot;Helvetica Neue&quot;,
+              sans-serif;
+          "
+        >
+          Loading
+        </p>
+      </div>
+    </div>
+    <svg width="0" height="0" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter
+          id="glassfilter"
+          x="0%"
+          y="0%"
+          width="100%"
+          height="100%"
+          color-interpolation-filters="sRGB"
+        >
+          <feGaussianBlur in="SourceAlpha" stdDeviation="6" result="edgeBlur" />
+
+          <feColorMatrix
+            in="edgeBlur"
+            type="matrix"
+            result="edgeMap"
+            values="
+          0 0 0 0 0.5
+          0 0 0 0 1
+          0 0 0 0 0
+          0 0 0 1 0"
+          />
+
+          <feTurbulence
+            type="turbulence"
+            baseFrequency="0.003 0.003"
+            numOctaves="1"
+            seed="2"
+            result="tinyNoise"
+          />
+          <feBlend
+            in="edgeMap"
+            in2="tinyNoise"
+            mode="multiply"
+            result="edgeMapWithNoise"
+          />
+
+          <feDisplacementMap
+            in="SourceGraphic"
+            in2="edgeMapWithNoise"
+            scale="25"
+            xChannelSelector="R"
+            yChannelSelector="G"
+          />
+        </filter>
+      </defs>
+    </svg>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

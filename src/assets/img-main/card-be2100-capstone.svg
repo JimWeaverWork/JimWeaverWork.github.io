@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 340" preserveAspectRatio="xMidYMid slice" width="640" height="340">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8a0b50"/>
+      <stop offset="0.55" stop-color="#5a061f"/>
+      <stop offset="1" stop-color="#1c0220"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#ff5a76"/>
+      <stop offset="0.4" stop-color="#f70032" stop-opacity="0.8"/>
+      <stop offset="1" stop-color="#f70032" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0.55" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0.5"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="340" fill="url(#sky)"/>
+  <circle cx="351.4" cy="111.3" r="116.6" fill="url(#glow)"/>
+  <circle cx="351.4" cy="111.3" r="48.6" fill="#ff2c4e"/>
+    <path d="M-20 189.4L46 194.7L-20 240.3Z" fill="#640728"/>
+    <path d="M-20 240.3L46 194.7L68.6 252.4Z" fill="#470523"/>
+    <path d="M46 194.7L124.5 182.7L68.6 252.4Z" fill="#73092a"/>
+    <path d="M68.6 252.4L124.5 182.7L131.8 231.7Z" fill="#620727"/>
+    <path d="M124.5 182.7L217.6 199.2L131.8 231.7Z" fill="#7a092c"/>
+    <path d="M131.8 231.7L217.6 199.2L185 235.7Z" fill="#72092a"/>
+    <path d="M217.6 199.2L280.7 182.9L185 235.7Z" fill="#9a0c31"/>
+    <path d="M185 235.7L280.7 182.9L261.4 253.6Z" fill="#a70d33"/>
+    <path d="M280.7 182.9L346.2 182.9L261.4 253.6Z" fill="#ca113a"/>
+    <path d="M261.4 253.6L346.2 182.9L371.4 250.6Z" fill="#c11038"/>
+    <path d="M346.2 182.9L421.3 197.5L371.4 250.6Z" fill="#bd1037"/>
+    <path d="M371.4 250.6L421.3 197.5L418.8 252.1Z" fill="#a80e34"/>
+    <path d="M421.3 197.5L497.2 202L418.8 252.1Z" fill="#b60f36"/>
+    <path d="M418.8 252.1L497.2 202L510.4 246.3Z" fill="#8a0b2e"/>
+    <path d="M497.2 202L599.2 198.9L510.4 246.3Z" fill="#79092c"/>
+    <path d="M510.4 246.3L599.2 198.9L568.1 256.3Z" fill="#5b0626"/>
+    <path d="M599.2 198.9L660 203.3L568.1 256.3Z" fill="#6a0829"/>
+    <path d="M568.1 256.3L660 203.3L660 241.4Z" fill="#500524"/>
+    <path d="M-20 240.3L68.6 252.4L-20 281.4Z" fill="#450422"/>
+    <path d="M-20 281.4L68.6 252.4L72.6 296.6Z" fill="#450422"/>
+    <path d="M68.6 252.4L131.8 231.7L72.6 296.6Z" fill="#5b0626"/>
+    <path d="M72.6 296.6L131.8 231.7L151 300.2Z" fill="#4c0524"/>
+    <path d="M131.8 231.7L185 235.7L151 300.2Z" fill="#680828"/>
+    <path d="M151 300.2L185 235.7L210.8 291.4Z" fill="#560625"/>
+    <path d="M185 235.7L261.4 253.6L210.8 291.4Z" fill="#6c0829"/>
+    <path d="M210.8 291.4L261.4 253.6L285.7 283.5Z" fill="#890b2e"/>
+    <path d="M261.4 253.6L371.4 250.6L285.7 283.5Z" fill="#a50d33"/>
+    <path d="M285.7 283.5L371.4 250.6L339.9 283.7Z" fill="#a10d32"/>
+    <path d="M371.4 250.6L418.8 252.1L339.9 283.7Z" fill="#a70d33"/>
+    <path d="M339.9 283.7L418.8 252.1L412.6 299.3Z" fill="#960c30"/>
+    <path d="M418.8 252.1L510.4 246.3L412.6 299.3Z" fill="#8b0b2f"/>
+    <path d="M412.6 299.3L510.4 246.3L530.2 306.1Z" fill="#71092a"/>
+    <path d="M510.4 246.3L568.1 256.3L530.2 306.1Z" fill="#670828"/>
+    <path d="M530.2 306.1L568.1 256.3L571.6 283.9Z" fill="#4c0524"/>
+    <path d="M568.1 256.3L660 241.4L571.6 283.9Z" fill="#580626"/>
+    <path d="M571.6 283.9L660 241.4L660 294.8Z" fill="#3e0421"/>
+    <path d="M-20 281.4L72.6 296.6L-20 340Z" fill="#380320"/>
+    <path d="M-20 340L72.6 296.6L39.8 340Z" fill="#2c021e"/>
+    <path d="M72.6 296.6L151 300.2L39.8 340Z" fill="#27021d"/>
+    <path d="M39.8 340L151 300.2L150.2 340Z" fill="#21011c"/>
+    <path d="M151 300.2L210.8 291.4L150.2 340Z" fill="#430422"/>
+    <path d="M150.2 340L210.8 291.4L211.1 340Z" fill="#520625"/>
+    <path d="M210.8 291.4L285.7 283.5L211.1 340Z" fill="#650728"/>
+    <path d="M211.1 340L285.7 283.5L283 340Z" fill="#72092a"/>
+    <path d="M285.7 283.5L339.9 283.7L283 340Z" fill="#980c31"/>
+    <path d="M283 340L339.9 283.7L353.4 340Z" fill="#900b30"/>
+    <path d="M339.9 283.7L412.6 299.3L353.4 340Z" fill="#8f0b2f"/>
+    <path d="M353.4 340L412.6 299.3L450.6 340Z" fill="#8b0b2e"/>
+    <path d="M412.6 299.3L530.2 306.1L450.6 340Z" fill="#660728"/>
+    <path d="M450.6 340L530.2 306.1L521.9 340Z" fill="#570626"/>
+    <path d="M530.2 306.1L571.6 283.9L521.9 340Z" fill="#410422"/>
+    <path d="M521.9 340L571.6 283.9L603.9 340Z" fill="#350320"/>
+    <path d="M571.6 283.9L660 294.8L603.9 340Z" fill="#2f021e"/>
+    <path d="M603.9 340L660 294.8L660 340Z" fill="#30021f"/>
+  <rect width="640" height="340" fill="url(#ground)"/>
+  <rect x="38" y="266" width="58" height="5" rx="2.5" fill="#ff2c4e"/>
+  <text x="36" y="306" font-family="system-ui, -apple-system, sans-serif" font-size="30" font-weight="700" fill="#ffffff" paint-order="stroke" stroke="#1c0212" stroke-width="3" stroke-opacity="0.55" stroke-linejoin="round">BE2100 Capstone</text>
+</svg>

@@ -1,26 +1,77 @@
-# Jim Weaver
+# jimweaver.com
 
-I am a backend-focused developer who likes to build at scalable, with reliable systems that operate at speed.
+My personal developer portfolio and blog — a fully static React site deployed to GitHub Pages.
 
-## About
+🔗 Live at **[jimweaver.com](https://jimweaver.com)**
 
-I'm interested in systems engineering and the full stack of a system—from schema design and concurrency to observability and deployment. My work gravitates toward languages like **Elixir**, **Rust**, **Python** for backend development, with a strong foundation in databases, DevOps, and distributed systems.
+## About me
 
-I am currently studying Electrical & Computer Engineering, which helps me stay grounded in real-world constraints and reminds me of the importance of building things that actually matter.
+Hi, I'm Jim (James) — an aspiring engineer working on my degree at Wayne State
+University, with interests spanning electrical and software engineering. I enjoy
+automation and building things end to end, and I use this site to showcase the
+projects I've worked on and to keep a small blog along the way.
 
-## Interests
+## Tech stack
 
-- **Languages**: Rust, Python, Elixir, C++
-- **Systems**: PostgreSQL, SQLite, Redis, Docker, AWS
-- **Focus**: Systems programming, distributed systems, databases, DevOps
+- **React 19** + **TypeScript** — UI
+- **Vite** — build tooling & dev server
+- **MUI (Material UI)** — components & theming
+- **Framer Motion** — animation
+- **React Router** — client-side routing
+- **Lottie** — the animated hero
+- **GitHub Pages** — hosting (auto-deployed via GitHub Actions)
 
+## Run it yourself
 
-## Tech Stack
+You're welcome to clone this and use it as a starting point for your own
+portfolio.
 
-This portfolio is built with:
+### Prerequisites
 
-- **Svelte** - A modern, reactive JavaScript framework
-- **TypeScript** - For type-safe development
-- **Vite** - Fast build tool and development server
-- **pnpm** - Efficient package manager
-- **Simple Icons** - Minimal SVG icon library
+- [Node.js](https://nodejs.org) 20+ (CI builds on Node 24)
+- A code editor (VS Code recommended)
+
+### Setup
+
+```bash
+git clone https://github.com/JimWeaverWork/JimWeaverWork.github.io.git
+cd JimWeaverWork.github.io
+npm install
+npm run dev
+```
+
+The dev server runs at <http://localhost:5173>.
+
+### Common commands
+
+| Command           | What it does                                          |
+| ----------------- | ----------------------------------------------------- |
+| `npm run dev`     | Start the Vite dev server                             |
+| `npm run build`   | Type-check and produce a production build in `dist/`  |
+| `npm run preview` | Preview the production build locally                  |
+| `npm run lint`    | Run ESLint                                            |
+
+## Making it your own
+
+Most content lives in plain data files — edit these and the site updates:
+
+- **Projects** — `src/jim-main/projectsData.ts`
+- **Blog posts** — one file per post in `src/jim-blog/` (auto-collected)
+- **Tech stack strip** — `src/jim-techstack/techStackData.ts`
+- **Site info / footer** — `src/jim-commons/siteInfo.ts`
+
+Two scaffolding helpers wire up the boilerplate for you:
+
+```bash
+make new-card slug=my-thing title="My Thing"   # project card + /project/<slug> page
+make new-post slug=my-post  title="My Post"     # blog post  + /blog/<slug> page
+```
+
+Deploying to your own domain? Update `public/CNAME` and the `homepage` field in
+`package.json`.
+
+## Deployment
+
+Every push to `main` runs the GitHub Actions workflow
+(`.github/workflows/deploy.yml`), which builds the site and publishes `dist/` to
+GitHub Pages.
